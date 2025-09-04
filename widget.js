@@ -41,7 +41,6 @@
       </div>
     `;
 
-        // === your JS logic here ===
         const API_BASE_URL = "https://gfgp.ai/api";
         const authForm = container.querySelector('#auth-form');
         const linkedinLoginBtn = container.querySelector('#linkedin-login');
