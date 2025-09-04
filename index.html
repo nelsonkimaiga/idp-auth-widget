@@ -57,8 +57,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            const API_BASE_URL = "http://161.35.80.82:8091/api/v1";
-            // const API_BASE_URL = "http://localhost:8091/api/v1";
+            const API_BASE_URL = "https://gfgp.ai/api";
+            // const API_BASE_URL = "http://localhost:8091";
 
             const authForm = document.getElementById('auth-form');
             const linkedinLoginBtn = document.getElementById('linkedin-login');
@@ -147,7 +147,7 @@
                 const email = e.target.email.value;
                 const password = e.target.password.value;
 
-                const path = isLoginMode ? '/auth/login' : '/auth/register';
+                const path = isLoginMode ? '/idp/api/v1/auth/login' : '/idp/api/v1/auth/register';
                 const body = isLoginMode ? {
                     email,
                     password
@@ -174,7 +174,7 @@
 
             linkedinLoginBtn.addEventListener('click', () => {
                 showStatus('Redirecting to LinkedIn...');
-                window.location.href = `${API_BASE_URL}/auth/linkedin`;
+                window.location.href = `${API_BASE_URL}/idp/api/v1/auth/linkedin`;
             });
         });
     </script>
