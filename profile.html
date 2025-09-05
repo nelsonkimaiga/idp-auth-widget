@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+
+<body>
+    <h1>Profile</h1>
+    <h3>Decoded Access Token Claims:</h3>
+    <pre id="claims"></pre>
+
+    <h3>Backend API Response:</h3>
+    <pre id="backend-response"></pre>
+
+    <!-- JWT decoder -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+
+    <script>
+        const accessToken = localStorage.getItem("access_token");
+        const refreshToken = localStorage.getItem("refresh_token");
+        const userId = localStorage.getItem("userId");
+
+        if (!accessToken) {
+            // no token? back to login
+            window.location.href = "index.html";
+        } else {
+            // Decode access token to show claims
+            try {
+                const decoded = jwt_decode(accessToken);
+                document.getElementById("claims").innerText = JSON.stringify(decoded, null, 2);
+            } catch (err) {
+                console.error("Failed to decode JWT", err);
+            }
+
+            // Call your backend API with Authorization header
+            fetch("http://localhost:8080/api/v1/user", {
+                    headers: {
+                        "Authorization": "Bearer " + accessToken
+                    }
+                })
+                .then(r => {
+                    if (!r.ok) throw new Error("API call failed with status " + r.status);
+                    return r.json();
+                })
+                .then(data => {
+                    document.getElementById("backend-response").innerText = JSON.stringify(data, null, 2);
+                })
+                .catch(err => {
+                    document.getElementById("backend-response").innerText = "Error: " + err.message;
+                });
+        }
+    </script>
+</body>
+
+</html>
