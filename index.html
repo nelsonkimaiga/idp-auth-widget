@@ -57,6 +57,26 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const accessToken = urlParams.get("access_token");
+            const refreshToken = urlParams.get("refresh_token");
+            const userId = urlParams.get("userId");
+
+            if (accessToken && refreshToken) {
+                window.parent.postMessage({
+                        type: "IDP_AUTH_SUCCESS",
+                        accessToken,
+                        refreshToken,
+                        userId
+                    },
+                    "*"
+                );
+
+                document.getElementById("status-message").textContent =
+                    "Logged in via LinkedIn!";
+                return;
+            }
+
             const API_BASE_URL = "https://gfgp.ai/api";
             // const API_BASE_URL = "http://localhost:8091";
 
@@ -163,6 +183,17 @@
 
                     if (isLoginMode) {
                         showStatus('Login successful!');
+
+                        if (data.accessToken && data.refreshToken) {
+                            window.parent.postMessage({
+                                    type: "IDP_AUTH_SUCCESS",
+                                    accessToken: data.accessToken,
+                                    refreshToken: data.refreshToken,
+                                    userId: data.userId
+                                },
+                                "*"
+                            );
+                        }
                     } else {
                         showStatus('Registration successful! Please verify via email.');
                         toggleAuthMode();
