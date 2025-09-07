@@ -108,25 +108,19 @@
                         body: JSON.stringify(body)
                     });
 
-                    if (!response.ok) {
-                        let errorMessage;
-                        try {
-                            const errorData = await response.json();
-                            errorMessage = errorData.message || 'Operation failed';
-                        } catch {
-                            errorMessage = await response.text();
-                        }
-                        throw new Error(errorMessage);
-                    }
-
                     let data;
-                    const contentType = response.headers.get("content-type");
-                    if (contentType && contentType.includes("application/json")) {
+                    const contentType = response.headers.get("content-type") || "";
+                    if (contentType.includes("application/json")) {
                         data = await response.json();
                     } else {
                         data = {
                             message: await response.text()
                         };
+                    }
+
+                    if (!response.ok) {
+                        const errorMessage = data.message || 'Operation failed';
+                        throw new Error(errorMessage);
                     }
 
                     return data;
@@ -148,10 +142,7 @@
                 const password = e.target.password.value;
 
                 const path = isLoginMode ? '/idp/api/v1/auth/login' : '/idp/api/v1/auth/register';
-                const body = isLoginMode ? {
-                    email,
-                    password
-                } : {
+                const body = {
                     email,
                     password
                 };
@@ -163,12 +154,16 @@
 
                     if (isLoginMode) {
                         showStatus('Login successful!');
+                        // store tokens
+                        localStorage.setItem("access_token", data.accessToken);
+                        localStorage.setItem("refresh_token", data.refreshToken);
                         setTimeout(() => {
                             authForm.reset();
                             statusMessage.classList.add("hidden");
                         }, 100);
                     } else {
-                        showStatus('Registration successful! Please verify via email.');
+                        // registration message
+                        showStatus(data.message);
                         toggleAuthMode();
                     }
                 } catch (err) {
