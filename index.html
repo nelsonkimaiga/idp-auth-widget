@@ -141,7 +141,7 @@
                 const email = e.target.email.value;
                 const password = e.target.password.value;
 
-                const path = isLoginMode ? '/idp/api/v1/auth/login' : '/idp/api/v1/auth/register';
+                const path = isLoginMode ? '/idp/auth/login' : '/idp/auth/register';
                 const body = {
                     email,
                     password
@@ -173,7 +173,7 @@
 
             linkedinLoginBtn.addEventListener('click', () => {
                 showStatus('Redirecting to LinkedIn...');
-                window.location.href = `${API_BASE_URL}/idp/api/v1/auth/linkedin`;
+                window.location.href = `${API_BASE_URL}/idp/auth/linkedin`;
             });
         });
     </script>
