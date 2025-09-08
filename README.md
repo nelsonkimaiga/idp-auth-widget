@@ -1,1 +1,1 @@
-This is a lightweight HTML widget, hosted on: https://nelsonkimaiga.github.io/idp-auth-widget/ and is publicly accessible. The widget allows user login/registration in order to integrate into existing apps with zero or minimal code changes. 
+This is a lightweight HTML widget, hosted on: [GitHub Pages]https://nelsonkimaiga.github.io/idp-auth-widget/ and is publicly accessible. The widget allows user login/registration in order to integrate into existing apps with zero or minimal code changes. 
